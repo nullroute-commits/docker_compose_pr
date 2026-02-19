@@ -24,7 +24,7 @@ class TenantManager:
     
     def _load_tenants(self) -> None:
         """Load tenants from storage."""
-        from .models import Tenant
+        from ..models.tenant import Tenant
         
         for tenant_file in self.storage_path.glob("*.json"):
             with open(tenant_file, 'r') as f:
@@ -52,7 +52,7 @@ class TenantManager:
         Returns:
             Created tenant
         """
-        from .models import Tenant
+        from ..models.tenant import Tenant
         
         if slug in self._tenants:
             raise ValueError(f"Tenant with slug '{slug}' already exists")
@@ -101,7 +101,7 @@ class TenantManager:
         Returns:
             Updated tenant or None if not found
         """
-        from datetime import datetime
+        from datetime import datetime, timezone
         
         tenant = self._tenants.get(slug)
         if not tenant:
@@ -111,7 +111,7 @@ class TenantManager:
             if hasattr(tenant, key):
                 setattr(tenant, key, value)
         
-        tenant.updated_at = datetime.utcnow()
+        tenant.updated_at = datetime.now(timezone.utc)
         self._save_tenant(tenant)
         
         return tenant
