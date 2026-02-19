@@ -34,7 +34,7 @@ This project adheres to professional standards of conduct. Please be respectful 
 
 ### Prerequisites
 
-- Python 3.13+
+- Python 3.9-3.13
 - Poetry (for dependency management)
 - Docker Engine
 - Git
@@ -86,7 +86,7 @@ This project adheres to professional standards of conduct. Please be respectful 
 
 1. Create a virtual environment:
    ```bash
-   python3.13 -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # Linux/Mac
    # or
    venv\Scripts\activate     # Windows
@@ -380,7 +380,7 @@ Describe tests performed
 
 #### Using pip (Legacy)
 
-1. Check compatibility with Python 3.13
+1. Check compatibility with Python 3.9-3.13
 2. Pin exact versions in `requirements.txt`
 3. Update `pyproject.toml` dependencies manually
 4. Test all modules after update
