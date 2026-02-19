@@ -1,0 +1,108 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docker-compose-manager"
+version = "1.0.0"
+description = "Enterprise-level system for managing multitenant Docker Compose v3 deployments"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Enterprise Team", email = "team@example.com"}
+]
+keywords = ["docker", "compose", "multitenant", "deployment", "orchestration"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "Django>=5.0.13",
+    "djangorestframework>=3.15.2",
+    "django-cors-headers>=4.6.0",
+    "django-filter>=24.3",
+    "gunicorn>=23.0.0",
+    "pandas>=2.2.3",
+    "numpy>=2.1.3",
+    "netmiko>=4.4.0",
+    "napalm>=5.0.0",
+    "pynetbox>=7.4.1",
+    "asyncio>=3.4.3",
+    "aiohttp>=3.11.11",
+    "asyncpg>=0.30.0",
+    "docker>=7.1.0",
+    "docker-compose>=1.29.2",
+    "psycopg2-binary>=2.9.10",
+    "redis>=5.2.1",
+    "python-dotenv>=1.0.1",
+    "pyyaml>=6.0.2",
+    "toml>=0.10.2",
+    "python-json-logger>=3.2.1",
+    "structlog>=24.4.0",
+    "pydantic>=2.10.4",
+    "marshmallow>=3.24.1",
+    "requests>=2.32.3",
+    "click>=8.1.8",
+    "rich>=13.9.4",
+    "cryptography>=44.0.0",
+    "python-decouple>=3.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-django>=4.9.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "factory-boy>=3.3.1",
+    "black>=24.10.0",
+    "flake8>=7.1.1",
+    "mypy>=1.13.0",
+    "pylint>=3.3.2",
+]
+
+[project.scripts]
+dcm-init = "init:main"
+dcm-manage = "manage:main"
+
+[project.urls]
+Homepage = "https://github.com/nullroute-commits/docker_compose_pr"
+Repository = "https://github.com/nullroute-commits/docker_compose_pr"
+Issues = "https://github.com/nullroute-commits/docker_compose_pr/issues"
+
+[tool.setuptools]
+packages = ["docker_compose_manager"]
+
+[tool.setuptools.package-data]
+docker_compose_manager = ["py.typed"]
+
+[tool.black]
+line-length = 100
+target-version = ['py313']
+include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pylint.messages_control]
+max-line-length = 100
+disable = ["C0111", "C0103"]

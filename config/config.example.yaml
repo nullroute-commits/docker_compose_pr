@@ -1,0 +1,33 @@
+# Docker Compose Manager Configuration
+
+app_name: docker_compose_manager
+environment: production
+debug: false
+
+# Database configuration
+database_host: localhost
+database_port: 5432
+database_name: dcm_db
+database_user: dcm_user
+database_password: change_me
+
+# Redis configuration
+redis_host: localhost
+redis_port: 6379
+redis_db: 0
+
+# Docker configuration
+docker_socket: unix:///var/run/docker.sock
+docker_api_version: auto
+
+# Logging configuration
+log_level: INFO
+log_file: logs/application.log
+
+# Multitenant configuration
+enable_multitenancy: true
+default_tenant: default
+
+# Network automation (optional)
+# netbox_url: https://netbox.example.com
+# netbox_token: your_token_here
