@@ -129,7 +129,7 @@ class ProjectInitializer:
     def create_requirements_file(self) -> None:
         """Create requirements.txt with pinned versions compatible with Python 3.9-3.13."""
         requirements = """# Core Django and Web Framework
-Django==4.2.19; python_version < "3.10"
+Django==4.2.26; python_version < "3.10"
 Django==5.1.14; python_version >= "3.10"
 djangorestframework==3.15.2
 django-cors-headers==4.6.0
@@ -214,7 +214,7 @@ packages = [{{include = "{self.project_name}"}}]
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
 Django = [
-    {{ version = "^4.2.19", python = ">=3.9,<3.10" }},
+    {{ version = "^4.2.26", python = ">=3.9,<3.10" }},
     {{ version = "^5.1.14", python = ">=3.10,<3.14" }},
 ]
 djangorestframework = "^3.15.2"

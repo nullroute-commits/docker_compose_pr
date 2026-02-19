@@ -28,7 +28,7 @@ packages = [{include = "docker_compose_manager"}]
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
 Django = [
-    { version = "^4.2.19", python = ">=3.9,<3.10" },
+    { version = "^4.2.26", python = ">=3.9,<3.10" },
     { version = "^5.1.14", python = ">=3.10,<3.14" },
 ]
 djangorestframework = "^3.15.2"

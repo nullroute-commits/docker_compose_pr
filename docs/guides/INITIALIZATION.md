@@ -298,7 +298,7 @@ touch <module_name>/compose/validators/custom_validator.py
 
 All dependencies are pinned to specific versions compatible with Python 3.9-3.13:
 
-- Django 4.2.19 on Python 3.9, Django 5.1.14 on Python 3.10+
+- Django 4.2.26 on Python 3.9, Django 5.1.14 on Python 3.10+
 - pandas 2.2.3
 - numpy 1.26.4 on Python 3.9, numpy 2.1.3 on Python 3.10+
 - netmiko 4.4.0
