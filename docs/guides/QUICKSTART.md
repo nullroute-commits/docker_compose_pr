@@ -16,6 +16,34 @@ cd my_orchestrator
 
 ### Step 2: Set Up Environment
 
+#### Option A: Using Poetry (Recommended)
+
+```bash
+# Install Poetry if not already installed
+curl -sSL https://install.python-poetry.org | python3 -
+
+# Install dependencies
+poetry install
+
+# Activate virtual environment
+poetry shell
+```
+
+#### Option B: Using Docker (Fastest)
+
+```bash
+# Copy environment template
+cp .env.template .env
+
+# Build and start services
+docker compose up -d
+
+# Initialize database
+docker compose exec web python manage.py migrate
+```
+
+#### Option C: Using pip (Legacy)
+
 ```bash
 # Create virtual environment
 python3.13 -m venv venv
@@ -276,6 +304,31 @@ volumes:
 
 ### Run Unit Tests
 
+#### Using Poetry
+```bash
+# Run all tests
+poetry run pytest tests/
+
+# Run specific test file
+poetry run pytest tests/unit/test_tenant.py
+
+# Run with verbose output
+poetry run pytest -v tests/
+
+# Run with coverage report
+poetry run pytest --cov=my_orchestrator tests/
+```
+
+#### Using Docker
+```bash
+# Run all tests
+docker compose exec web pytest tests/
+
+# Run with coverage
+docker compose exec web pytest --cov=my_orchestrator tests/
+```
+
+#### Using pip
 ```bash
 # Run all tests
 pytest tests/
@@ -365,6 +418,20 @@ print(f"Deployment removed: {success}")
 ### Can't import modules
 
 Ensure you're in the virtual environment and dependencies are installed:
+
+#### Using Poetry
+```bash
+poetry install
+poetry shell
+```
+
+#### Using Docker
+```bash
+docker compose up -d
+docker compose exec web python -c "import my_orchestrator; print('OK')"
+```
+
+#### Using pip
 ```bash
 source venv/bin/activate
 pip install -r requirements.txt
@@ -375,6 +442,12 @@ pip install -r requirements.txt
 Check Docker is running:
 ```bash
 docker ps
+```
+
+Check Docker Compose services:
+```bash
+docker compose ps
+docker compose logs web
 ```
 
 ### Permission errors

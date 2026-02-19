@@ -35,10 +35,54 @@ This project adheres to professional standards of conduct. Please be respectful 
 ### Prerequisites
 
 - Python 3.13+
+- Poetry (for dependency management)
 - Docker Engine
 - Git
 
 ### Environment Setup
+
+#### Option 1: Using Poetry (Recommended)
+
+1. Install Poetry (if not already installed):
+   ```bash
+   curl -sSL https://install.python-poetry.org | python3 -
+   ```
+
+2. Install dependencies:
+   ```bash
+   poetry install
+   ```
+
+3. Activate the virtual environment:
+   ```bash
+   poetry shell
+   ```
+
+4. Set up environment:
+   ```bash
+   cp .env.template .env
+   # Edit .env as needed
+   ```
+
+#### Option 2: Using Docker
+
+1. Build the Docker image:
+   ```bash
+   docker compose build
+   ```
+
+2. Set up environment:
+   ```bash
+   cp .env.template .env
+   # Edit .env as needed
+   ```
+
+3. Run the services:
+   ```bash
+   docker compose up -d
+   ```
+
+#### Option 3: Using pip (Legacy)
 
 1. Create a virtual environment:
    ```bash
@@ -96,6 +140,34 @@ Add support for Kubernetes deployments
 
 ### Running Tests
 
+#### Using Poetry
+
+```bash
+# Run all tests
+poetry run pytest tests/
+
+# Run specific test file
+poetry run pytest tests/unit/test_tenant.py
+
+# Run with coverage
+poetry run pytest --cov=docker_compose_manager tests/
+
+# Run with verbose output
+poetry run pytest -v tests/
+```
+
+#### Using Docker
+
+```bash
+# Run tests in container
+docker compose exec web pytest tests/
+
+# Run with coverage
+docker compose exec web pytest --cov=docker_compose_manager tests/
+```
+
+#### Using pip
+
 ```bash
 # Run all tests
 pytest tests/
@@ -139,6 +211,18 @@ Follow PEP 8 with these specifics:
 ### Formatting
 
 Format your code with Black:
+
+#### Using Poetry
+```bash
+poetry run black docker_compose_manager/
+```
+
+#### Using Docker
+```bash
+docker compose exec web black docker_compose_manager/
+```
+
+#### Using pip
 ```bash
 black docker_compose_manager/
 ```
@@ -146,6 +230,32 @@ black docker_compose_manager/
 ### Linting
 
 Check code quality:
+
+#### Using Poetry
+```bash
+# Flake8
+poetry run flake8 docker_compose_manager/
+
+# Pylint
+poetry run pylint docker_compose_manager/
+
+# MyPy
+poetry run mypy docker_compose_manager/
+```
+
+#### Using Docker
+```bash
+# Flake8
+docker compose exec web flake8 docker_compose_manager/
+
+# Pylint
+docker compose exec web pylint docker_compose_manager/
+
+# MyPy
+docker compose exec web mypy docker_compose_manager/
+```
+
+#### Using pip
 ```bash
 # Flake8
 flake8 docker_compose_manager/
@@ -236,9 +346,43 @@ Describe tests performed
 
 ### Updating Dependencies
 
+#### Using Poetry (Recommended)
+
+1. Add a new dependency:
+   ```bash
+   poetry add package-name
+   ```
+
+2. Add a development dependency:
+   ```bash
+   poetry add --group dev package-name
+   ```
+
+3. Update a dependency:
+   ```bash
+   poetry update package-name
+   ```
+
+4. Update all dependencies:
+   ```bash
+   poetry update
+   ```
+
+5. Export to requirements.txt for backwards compatibility:
+   ```bash
+   poetry export -f requirements.txt --output requirements.txt --without-hashes
+   ```
+
+6. Rebuild Docker image with new dependencies:
+   ```bash
+   docker compose build
+   ```
+
+#### Using pip (Legacy)
+
 1. Check compatibility with Python 3.13
 2. Pin exact versions in `requirements.txt`
-3. Update `pyproject.toml` dependencies
+3. Update `pyproject.toml` dependencies manually
 4. Test all modules after update
 5. Document any breaking changes
 
