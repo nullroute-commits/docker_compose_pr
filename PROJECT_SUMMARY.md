@@ -4,6 +4,15 @@
 
 This repository provides an **enterprise-level initialization system** for creating modular, production-ready Docker Compose management platforms. The centerpiece is the `init.py` script, which generates a complete project structure with custom module names and all necessary components for managing multitenant Docker Compose v3 deployments.
 
+## Recent Updates (v1.0.2)
+
+**Migrated to Poetry and Alpine containers** for improved dependency management and reduced image size:
+- ✅ Poetry-based dependency management (replaces pip)
+- ✅ Multi-stage Alpine Docker builds (smaller, more secure images)
+- ✅ Docker Compose orchestration with PostgreSQL and Redis
+- ✅ Updated all documentation for Poetry and Docker workflows
+- ✅ Maintained backwards compatibility with pip via requirements.txt
+
 ## Key Achievement
 
 **Created a fully functional, enterprise-grade initialization script (`init.py`) that generates a complete project structure supporting:**
@@ -15,18 +24,21 @@ This repository provides an **enterprise-level initialization system** for creat
 - Network automation capabilities
 - Data processing infrastructure
 - Django web framework integration
+- **Poetry dependency management**
+- **Alpine-based containerization**
 - Complete documentation and examples
 
 ## Project Statistics
 
-- **Total Files Created**: 64
+- **Total Files Created**: 67+ (including Docker files)
 - **Python Modules**: 45+
-- **Documentation Files**: 5 guides
+- **Documentation Files**: 5 guides (all updated for Poetry/Docker)
 - **Test Files**: 4 (unit + integration)
-- **Configuration Files**: 6
-- **Lines of Code**: ~3,500+
-- **Dependencies**: 40+ packages (all pinned to LTS versions)
+- **Configuration Files**: 8 (including Docker configs)
+- **Lines of Code**: ~4,000+
+- **Dependencies**: 40+ packages (managed by Poetry, pinned to LTS versions)
 - **Python Version**: 3.13+
+- **Container Base**: Python 3.13 Alpine
 
 ## Core Components
 
@@ -41,6 +53,9 @@ This repository provides an **enterprise-level initialization system** for creat
 - Custom module naming support
 - Comprehensive error handling
 - Progress reporting
+- **Generates Poetry configuration (pyproject.toml)**
+- **Generates Alpine-based Dockerfile**
+- **Generates docker-compose.yml with services**
 
 **Usage**:
 ```bash

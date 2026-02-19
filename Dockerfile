@@ -7,12 +7,15 @@ FROM python:3.13-alpine AS builder
 # Install build dependencies
 RUN apk add --no-cache \
     gcc \
+    g++ \
     musl-dev \
     libffi-dev \
     postgresql-dev \
     linux-headers \
+    rust \
     cargo \
-    openssl-dev
+    openssl-dev \
+    pkgconfig
 
 # Install Poetry
 ENV POETRY_VERSION=1.8.2 \
@@ -36,7 +39,7 @@ FROM python:3.13-alpine
 
 # Install runtime dependencies
 RUN apk add --no-cache \
-    libpq \
+    postgresql-libs \
     libffi \
     openssl
 
