@@ -129,7 +129,7 @@ class ProjectInitializer:
     def create_requirements_file(self) -> None:
         """Create requirements.txt with pinned versions compatible with Python 3.13."""
         requirements = """# Core Django and Web Framework
-Django==5.0.13
+Django==5.1.14
 djangorestframework==3.15.2
 django-cors-headers==4.6.0
 django-filter==24.3
@@ -146,7 +146,7 @@ pynetbox==7.4.1
 
 # Async Support
 asyncio==3.4.3
-aiohttp==3.11.11
+aiohttp==3.13.3
 asyncpg==0.30.0
 
 # Docker
@@ -184,7 +184,7 @@ mypy==1.13.0
 pylint==3.3.2
 
 # Security
-cryptography==44.0.0
+cryptography==46.0.5
 python-decouple==3.8
 
 # Utilities

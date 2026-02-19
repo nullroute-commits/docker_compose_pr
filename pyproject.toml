@@ -25,7 +25,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "Django>=5.0.13",
+    "Django>=5.1.14",
     "djangorestframework>=3.15.2",
     "django-cors-headers>=4.6.0",
     "django-filter>=24.3",
@@ -36,7 +36,7 @@ dependencies = [
     "napalm>=5.0.0",
     "pynetbox>=7.4.1",
     "asyncio>=3.4.3",
-    "aiohttp>=3.11.11",
+    "aiohttp>=3.13.3",
     "asyncpg>=0.30.0",
     "docker>=7.1.0",
     "docker-compose>=1.29.2",
@@ -52,7 +52,7 @@ dependencies = [
     "requests>=2.32.3",
     "click>=8.1.8",
     "rich>=13.9.4",
-    "cryptography>=44.0.0",
+    "cryptography>=46.0.5",
     "python-decouple>=3.8",
 ]
 

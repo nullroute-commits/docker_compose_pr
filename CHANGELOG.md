@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-02-19
+
+### Security
+
+- **CRITICAL**: Updated aiohttp from 3.11.11 to 3.13.3 to fix zip bomb vulnerability (CVE affecting <= 3.13.2)
+- **CRITICAL**: Updated cryptography from 44.0.0 to 46.0.5 to fix subgroup attack vulnerability (CVE affecting <= 46.0.4)
+- **CRITICAL**: Updated Django from 5.0.13 to 5.1.14 to fix multiple vulnerabilities:
+  - Denial-of-service vulnerability in HttpResponseRedirect on Windows
+  - SQL injection via _connector keyword argument in QuerySet and Q objects
+
+### Changed
+
+- Bumped all security-critical dependencies to patched versions
+- Updated pyproject.toml with new minimum versions
+- Updated init.py to generate projects with patched dependencies
+
 ## [1.0.0] - 2026-02-19
 
 ### Added
@@ -29,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Isolation**: Tenant isolation infrastructure
 
 #### Django Integration
-- **Django Application**: Full Django 5.0.13 integration
+- **Django Application**: Full Django 5.1.14 integration (security patched)
 - **REST API Framework**: Django REST Framework setup
 - **Admin Interface**: Django admin support
 - **Settings Management**: Environment-based Django settings
@@ -61,8 +77,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Package Configuration**: setup.py and pyproject.toml for distribution
 - **Environment Template**: .env.template for configuration
 
-#### Dependencies (Pinned Versions)
-- Django 5.0.13 (LTS)
+#### Dependencies (Pinned Versions - Security Patched)
+- Django 5.1.14 (patched for CVEs)
 - djangorestframework 3.15.2
 - pandas 2.2.3
 - numpy 2.1.3
@@ -71,12 +87,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pynetbox 7.4.1
 - docker 7.1.0
 - asyncio 3.4.3
-- aiohttp 3.11.11
+- aiohttp 3.13.3 (patched for zip bomb)
 - psycopg2-binary 2.9.10
 - redis 5.2.1
 - python-json-logger 3.2.1
 - structlog 24.4.0
 - pydantic 2.10.4
+- cryptography 46.0.5 (patched for subgroup attack)
 - And more (see requirements.txt)
 
 ### Security
