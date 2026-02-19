@@ -210,12 +210,12 @@ python3 init.py --name my_project --path /opt/projects
 All dependencies pinned to latest LTS releases compatible with Python 3.9-3.13:
 
 **Core Framework**:
-- Django 5.0.13 (LTS)
+- Django 4.2.19 on Python 3.9, Django 5.1.14 on Python 3.10+
 - Django REST Framework 3.15.2
 
 **Data Processing**:
 - pandas 2.2.3
-- numpy 2.1.3
+- numpy 1.26.4 on Python 3.9, numpy 2.1.3 on Python 3.10+
 
 **Network Automation**:
 - netmiko 4.4.0
