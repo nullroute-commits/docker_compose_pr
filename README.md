@@ -2,6 +2,23 @@
 
 Enterprise-level system for managing multitenant Docker Compose v3 deployments of FOSS/OSS tools, webapps, and databases.
 
+## 🚀 Quick Start
+
+This repository provides a powerful `init.py` script that generates a complete enterprise-level project structure with custom module names:
+
+```bash
+# Create a project with default name
+python3 init.py
+
+# Create a project with custom name
+python3 init.py --name my_custom_manager
+
+# Create a project in a specific directory
+python3 init.py --name my_project --path /path/to/projects
+```
+
+See [Initialization Guide](docs/guides/INITIALIZATION.md) and [Quick Start Guide](docs/guides/QUICKSTART.md) for detailed instructions.
+
 ## Features
 
 - **Modular Architecture**: Clean separation of concerns with well-defined modules
