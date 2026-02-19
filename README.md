@@ -37,11 +37,72 @@ See [Initialization Guide](docs/guides/INITIALIZATION.md) and [Quick Start Guide
 ### Prerequisites
 
 - Python 3.13+
+- Poetry (for dependency management)
 - Docker Engine
 - PostgreSQL (optional, for Django)
 - Redis (optional, for caching)
 
 ### Setup
+
+#### Option 1: Using Poetry (Recommended)
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd docker_compose_manager
+```
+
+2. Install Poetry (if not already installed):
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+3. Install dependencies:
+```bash
+poetry install
+```
+
+4. Activate the virtual environment:
+```bash
+poetry shell
+```
+
+5. Configure environment:
+```bash
+cp .env.template .env
+# Edit .env with your configuration
+```
+
+6. Initialize the database (if using Django):
+```bash
+poetry run python manage.py migrate
+```
+
+#### Option 2: Using Docker (Recommended for Production)
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd docker_compose_manager
+```
+
+2. Configure environment:
+```bash
+cp .env.template .env
+# Edit .env with your configuration
+```
+
+3. Build and run with Docker Compose:
+```bash
+docker compose up -d
+```
+
+4. Initialize the database:
+```bash
+docker compose exec web python manage.py migrate
+```
+
+#### Option 3: Using pip (Legacy)
 
 1. Clone the repository:
 ```bash

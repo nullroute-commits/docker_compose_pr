@@ -197,6 +197,93 @@ rich==13.9.4
         req_path.write_text(requirements)
         print(f"Created requirements.txt at {req_path}")
         
+    def create_pyproject_toml(self) -> None:
+        """Create pyproject.toml with Poetry configuration."""
+        pyproject_content = f'''[tool.poetry]
+name = "{self.project_name.replace("_", "-")}"
+version = "1.0.0"
+description = "Enterprise-level system for managing multitenant Docker Compose v3 deployments"
+authors = ["Enterprise Team <team@example.com>"]
+readme = "README.md"
+license = "Apache-2.0"
+keywords = ["docker", "compose", "multitenant", "deployment", "orchestration"]
+packages = [{{include = "{self.project_name}"}}]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+Django = "^5.1.14"
+djangorestframework = "^3.15.2"
+django-cors-headers = "^4.6.0"
+django-filter = "^24.3"
+gunicorn = "^23.0.0"
+pandas = "^2.2.3"
+numpy = "^2.1.3"
+netmiko = "^4.4.0"
+napalm = "^5.0.0"
+pynetbox = "^7.4.1"
+asyncio = "^3.4.3"
+aiohttp = "^3.13.3"
+asyncpg = "^0.30.0"
+docker = "^7.1.0"
+docker-compose = "^1.29.2"
+psycopg2-binary = "^2.9.10"
+redis = "^5.2.1"
+python-dotenv = "^1.0.1"
+pyyaml = "^6.0.2"
+toml = "^0.10.2"
+python-json-logger = "^3.2.1"
+structlog = "^24.4.0"
+pydantic = "^2.10.4"
+marshmallow = "^3.24.1"
+requests = "^2.32.3"
+click = "^8.1.8"
+rich = "^13.9.4"
+cryptography = "^46.0.5"
+python-decouple = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pytest-django = "^4.9.0"
+pytest-asyncio = "^0.24.0"
+pytest-cov = "^6.0.0"
+factory-boy = "^3.3.1"
+black = "^24.10.0"
+flake8 = "^7.1.1"
+mypy = "^1.13.0"
+pylint = "^3.3.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py313']
+include = '\\.pyi?$'
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pylint.messages_control]
+max-line-length = 100
+disable = ["C0111", "C0103"]
+'''
+        
+        pyproject_path = self.base_path / "pyproject.toml"
+        pyproject_path.write_text(pyproject_content)
+        print(f"Created pyproject.toml at {pyproject_path}")
+        
     def create_core_files(self) -> None:
         """Create core module files."""
         # Core __init__.py
@@ -1319,11 +1406,72 @@ Enterprise-level system for managing multitenant Docker Compose v3 deployments o
 ### Prerequisites
 
 - Python 3.13+
+- Poetry (for dependency management)
 - Docker Engine
 - PostgreSQL (optional, for Django)
 - Redis (optional, for caching)
 
 ### Setup
+
+#### Option 1: Using Poetry (Recommended)
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd {self.project_name}
+```
+
+2. Install Poetry (if not already installed):
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+3. Install dependencies:
+```bash
+poetry install
+```
+
+4. Activate the virtual environment:
+```bash
+poetry shell
+```
+
+5. Configure environment:
+```bash
+cp .env.template .env
+# Edit .env with your configuration
+```
+
+6. Initialize the database (if using Django):
+```bash
+poetry run python manage.py migrate
+```
+
+#### Option 2: Using Docker (Recommended for Production)
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd {self.project_name}
+```
+
+2. Configure environment:
+```bash
+cp .env.template .env
+# Edit .env with your configuration
+```
+
+3. Build and run with Docker Compose:
+```bash
+docker-compose up -d
+```
+
+4. Initialize the database:
+```bash
+docker-compose exec web python manage.py migrate
+```
+
+#### Option 3: Using pip (Legacy)
 
 1. Clone the repository:
 ```bash
@@ -1707,6 +1855,237 @@ Thumbs.db
         
         print(f"Updated .gitignore")
         
+    def create_docker_files(self) -> None:
+        """Create Dockerfile and docker-compose.yml."""
+        # Create Alpine-based Dockerfile
+        dockerfile_content = f'''# Multi-stage Alpine-based Dockerfile for {self.project_name.replace("_", " ").title()}
+# Uses Poetry for dependency management
+
+# Stage 1: Builder
+FROM python:3.13-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache \\
+    gcc \\
+    musl-dev \\
+    libffi-dev \\
+    postgresql-dev \\
+    linux-headers \\
+    cargo \\
+    openssl-dev
+
+# Install Poetry
+ENV POETRY_VERSION=1.8.2 \\
+    POETRY_HOME="/opt/poetry" \\
+    POETRY_NO_INTERACTION=1 \\
+    POETRY_VIRTUALENVS_CREATE=false
+
+RUN pip install --no-cache-dir "poetry==${{POETRY_VERSION}}"
+
+# Set working directory
+WORKDIR /app
+
+# Copy dependency files
+COPY pyproject.toml ./
+
+# Install dependencies
+RUN poetry install --only main --no-root --no-directory
+
+# Stage 2: Runtime
+FROM python:3.13-alpine
+
+# Install runtime dependencies
+RUN apk add --no-cache \\
+    libpq \\
+    libffi \\
+    openssl
+
+# Create non-root user
+RUN addgroup -g 1000 dcm && \\
+    adduser -D -u 1000 -G dcm dcm
+
+# Set working directory
+WORKDIR /app
+
+# Copy Python packages from builder
+COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+# Copy application code
+COPY --chown=dcm:dcm . .
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/deployments/tenants && \\
+    chown -R dcm:dcm /app
+
+# Switch to non-root user
+USER dcm
+
+# Expose port for Django application
+EXPOSE 8000
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \\
+    PYTHONDONTWRITEBYTECODE=1 \\
+    PATH="/app:${{PATH}}"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \\
+    CMD python -c "import sys; sys.exit(0)"
+
+# Default command
+CMD ["gunicorn", "{self.project_name}.django_app.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
+'''
+        
+        dockerfile_path = self.base_path / "Dockerfile"
+        dockerfile_path.write_text(dockerfile_content)
+        
+        # Create docker-compose.yml
+        compose_content = '''version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: docker-compose-manager:latest
+    container_name: dcm_web
+    restart: unless-stopped
+    ports:
+      - "${DCM_PORT:-8000}:8000"
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-change-me-in-production}
+      - DEBUG=${DEBUG:-false}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS:-*}
+      - DB_HOST=${DB_HOST:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-dcm_db}
+      - DB_USER=${DB_USER:-dcm_user}
+      - DB_PASSWORD=${DB_PASSWORD:-dcm_password}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./logs:/app/logs
+      - ./deployments:/app/deployments
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - db
+      - redis
+    networks:
+      - dcm_network
+
+  db:
+    image: postgres:16-alpine
+    container_name: dcm_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_NAME:-dcm_db}
+      - POSTGRES_USER=${DB_USER:-dcm_user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-dcm_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dcm_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: dcm_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - dcm_network
+
+networks:
+  dcm_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+'''
+        
+        compose_path = self.base_path / "docker-compose.yml"
+        compose_path.write_text(compose_content)
+        
+        # Create .dockerignore
+        dockerignore_content = '''# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Poetry
+poetry.lock
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+docs/_build/
+*.md
+!README.md
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Environment files
+.env
+.env.*
+!.env.template
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build artifacts
+setup.py
+MANIFEST.in
+
+# Development
+tests/
+scripts/deployment/deploy.sh
+'''
+        
+        dockerignore_path = self.base_path / ".dockerignore"
+        dockerignore_path.write_text(dockerignore_content)
+        
+        print(f"Created Docker files (Dockerfile, docker-compose.yml, .dockerignore)")
+        
     def run(self) -> None:
         """Run the complete initialization process."""
         print(f"\n{'='*60}")
@@ -1716,6 +2095,7 @@ Thumbs.db
         try:
             self.create_directory_structure()
             self.create_requirements_file()
+            self.create_pyproject_toml()
             self.create_core_files()
             self.create_logging_module()
             self.create_config_module()
@@ -1729,6 +2109,7 @@ Thumbs.db
             self.create_documentation()
             self.create_test_structure()
             self.create_utility_scripts()
+            self.create_docker_files()
             self.create_gitignore_additions()
             
             print(f"\n{'='*60}")
@@ -1736,13 +2117,21 @@ Thumbs.db
             print(f"{'='*60}\n")
             print(f"Project created at: {self.project_path}")
             print(f"\nNext steps:")
+            print(f"")
+            print(f"Option 1: Using Poetry (Recommended):")
             print(f"1. cd {self.project_name}")
-            print(f"2. python3.13 -m venv venv")
-            print(f"3. source venv/bin/activate")
-            print(f"4. pip install -r requirements.txt")
-            print(f"5. cp .env.template .env")
-            print(f"6. Edit .env with your configuration")
-            print(f"7. python manage.py migrate (if using Django)")
+            print(f"2. poetry install")
+            print(f"3. poetry shell")
+            print(f"4. cp .env.template .env")
+            print(f"5. Edit .env with your configuration")
+            print(f"6. poetry run python manage.py migrate")
+            print(f"")
+            print(f"Option 2: Using Docker (Recommended for Production):")
+            print(f"1. cd {self.project_name}")
+            print(f"2. cp .env.template .env")
+            print(f"3. Edit .env with your configuration")
+            print(f"4. docker-compose up -d")
+            print(f"5. docker-compose exec web python manage.py migrate")
             print(f"\nFor more information, see README.md")
             
         except Exception as e:

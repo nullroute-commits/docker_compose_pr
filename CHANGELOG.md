@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-02-19
+
+### Changed
+
+- **BREAKING**: Migrated from pip to Poetry for dependency management
+  - Converted `pyproject.toml` to Poetry format
+  - Updated all documentation to use Poetry commands
+  - Added `poetry.lock` generation support
+  - Kept `requirements.txt` for backwards compatibility
+
+### Added
+
+- **Alpine-based Dockerfile**: Multi-stage Docker build using Python 3.13 Alpine
+  - Significantly reduced image size
+  - Added build and runtime stage separation
+  - Non-root user for improved security
+  - Health checks included
+- **docker-compose.yml**: Complete orchestration setup with PostgreSQL and Redis
+- **.dockerignore**: Optimized Docker build context
+- Poetry configuration in pyproject.toml with proper dependency groups
+- Docker deployment instructions in README and documentation
+
+### Updated
+
+- init.py script now generates Poetry-based projects with Docker support
+- README with three installation options (Poetry, Docker, pip)
+- All documentation guides updated to include Poetry and Docker usage
+- CONTRIBUTING guide with Poetry workflow
+
 ## [1.0.1] - 2026-02-19
 
 ### Security
