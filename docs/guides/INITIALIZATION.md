@@ -199,7 +199,7 @@ cd <project_name>
 ### 2. Create Virtual Environment
 
 ```bash
-python3.13 -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
@@ -296,11 +296,11 @@ touch <module_name>/compose/validators/custom_validator.py
 
 ## Version Pinning
 
-All dependencies are pinned to specific versions compatible with Python 3.13:
+All dependencies are pinned to specific versions compatible with Python 3.9-3.13:
 
-- Django 5.0.13 (LTS)
+- Django 4.2.26 on Python 3.9, Django 5.1.14 on Python 3.10+
 - pandas 2.2.3
-- numpy 2.1.3
+- numpy 1.26.4 on Python 3.9, numpy 2.1.3 on Python 3.10+
 - netmiko 4.4.0
 - napalm 5.0.0
 - docker 7.1.0

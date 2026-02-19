@@ -37,7 +37,7 @@ This repository provides an **enterprise-level initialization system** for creat
 - **Configuration Files**: 8 (including Docker configs)
 - **Lines of Code**: ~4,000+
 - **Dependencies**: 40+ packages (managed by Poetry, pinned to LTS versions)
-- **Python Version**: 3.13+
+- **Python Version**: 3.9-3.13
 - **Container Base**: Python 3.13 Alpine
 
 ## Core Components
@@ -207,15 +207,15 @@ python3 init.py --name my_project --path /opt/projects
 
 ### Version Pinning Strategy
 
-All dependencies pinned to latest LTS releases compatible with Python 3.13:
+All dependencies pinned to latest LTS releases compatible with Python 3.9-3.13:
 
 **Core Framework**:
-- Django 5.0.13 (LTS)
+- Django 4.2.26 on Python 3.9, Django 5.1.14 on Python 3.10+
 - Django REST Framework 3.15.2
 
 **Data Processing**:
 - pandas 2.2.3
-- numpy 2.1.3
+- numpy 1.26.4 on Python 3.9, numpy 2.1.3 on Python 3.10+
 
 **Network Automation**:
 - netmiko 4.4.0
@@ -305,7 +305,7 @@ python setup.py install
 ```bash
 python3 init.py --name cloud_orchestrator
 cd cloud_orchestrator
-python3.13 -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -435,7 +435,7 @@ Potential areas for expansion:
 ## Success Criteria Met
 
 ✅ **Enterprise-level architecture**: Modular, maintainable, scalable
-✅ **Python 3.13 compatible**: All code works with latest Python
+✅ **Python 3.9-3.13 compatible**: All code works across the supported Python range
 ✅ **Version pinning**: All dependencies pinned to LTS releases
 ✅ **Modular code**: Clean separation across 9 modules
 ✅ **Advanced logging**: ISO JSON structured logging
@@ -496,4 +496,4 @@ See LICENSE file for details.
 
 **Date**: February 19, 2026
 
-**Python Requirement**: 3.13+
+**Python Requirement**: 3.9-3.13

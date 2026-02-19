@@ -16,7 +16,7 @@ Features:
 - Docker Compose v3 deployment management
 - Multitenant support
 
-Compatible with Python 3.13+
+Compatible with Python 3.9-3.13
 """
 
 import os
@@ -127,9 +127,10 @@ class ProjectInitializer:
             print(f"Created directory: {dir_path}")
             
     def create_requirements_file(self) -> None:
-        """Create requirements.txt with pinned versions compatible with Python 3.13."""
+        """Create requirements.txt with pinned versions compatible with Python 3.9-3.13."""
         requirements = """# Core Django and Web Framework
-Django==5.1.14
+Django==4.2.26; python_version < "3.10"
+Django==5.1.14; python_version >= "3.10"
 djangorestframework==3.15.2
 django-cors-headers==4.6.0
 django-filter==24.3
@@ -137,7 +138,8 @@ gunicorn==23.0.0
 
 # Data Processing
 pandas==2.2.3
-numpy==2.1.3
+numpy==1.26.4; python_version < "3.10"
+numpy==2.1.3; python_version >= "3.10"
 
 # Network Automation
 netmiko==4.4.0
@@ -210,14 +212,20 @@ keywords = ["docker", "compose", "multitenant", "deployment", "orchestration"]
 packages = [{{include = "{self.project_name}"}}]
 
 [tool.poetry.dependencies]
-python = "^3.13"
-Django = "^5.1.14"
+python = ">=3.9,<3.14"
+Django = [
+    {{ version = "^4.2.26", python = ">=3.9,<3.10" }},
+    {{ version = "^5.1.14", python = ">=3.10,<3.14" }},
+]
 djangorestframework = "^3.15.2"
 django-cors-headers = "^4.6.0"
 django-filter = "^24.3"
 gunicorn = "^23.0.0"
 pandas = "^2.2.3"
-numpy = "^2.1.3"
+numpy = [
+    {{ version = "^1.26.4", python = ">=3.9,<3.10" }},
+    {{ version = "^2.1.3", python = ">=3.10,<3.14" }},
+]
 netmiko = "^4.4.0"
 napalm = "^5.0.0"
 pynetbox = "^7.4.1"
@@ -258,7 +266,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 100
-target-version = ['py313']
+target-version = ['py39']
 include = '\\.pyi?$'
 
 [tool.pytest.ini_options]
@@ -269,7 +277,7 @@ python_functions = ["test_*"]
 addopts = "-v --tb=short"
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
@@ -294,13 +302,13 @@ A modular enterprise-level system for managing multitenant Docker Compose v3
 deployments of FOSS/OSS tools, webapps, and databases.
 
 Version: 1.0.0
-Python: 3.13+
+Python: 3.9-3.13
 Created: {self.timestamp}
 """
 
 __version__ = "1.0.0"
 __author__ = "Enterprise Team"
-__python_requires__ = ">=3.13"
+__python_requires__ = ">=3.9,<3.14"
 
 from {self.project_name}.core.logging import get_logger
 from {self.project_name}.core.config import load_config
@@ -1399,13 +1407,13 @@ Enterprise-level system for managing multitenant Docker Compose v3 deployments o
 - **Data Processing**: Built-in pandas and numpy support
 - **Async Operations**: Asyncio-based concurrent operations
 - **Version Pinning**: All dependencies pinned to stable LTS releases
-- **Python 3.13 Compatible**: Fully compatible with Python 3.13+
+- **Python 3.9-3.13 Compatible**: Fully compatible with Python 3.9 through 3.13
 
 ## Installation
 
 ### Prerequisites
 
-- Python 3.13+
+- Python 3.9-3.13
 - Poetry (for dependency management)
 - Docker Engine
 - PostgreSQL (optional, for Django)
@@ -1481,7 +1489,7 @@ cd {self.project_name}
 
 2. Create and activate virtual environment:
 ```bash
-python3.13 -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\\Scripts\\activate
 ```
 

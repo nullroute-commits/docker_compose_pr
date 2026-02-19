@@ -30,13 +30,13 @@ See [Initialization Guide](docs/guides/INITIALIZATION.md) and [Quick Start Guide
 - **Data Processing**: Built-in pandas and numpy support
 - **Async Operations**: Asyncio-based concurrent operations
 - **Version Pinning**: All dependencies pinned to stable LTS releases
-- **Python 3.13 Compatible**: Fully compatible with Python 3.13+
+- **Python 3.9-3.13 Compatible**: Fully compatible with Python 3.9 through 3.13
 
 ## Installation
 
 ### Prerequisites
 
-- Python 3.13+
+- Python 3.9-3.13
 - Poetry (for dependency management)
 - Docker Engine
 - PostgreSQL (optional, for Django)
@@ -112,7 +112,7 @@ cd docker_compose_manager
 
 2. Create and activate virtual environment:
 ```bash
-python3.13 -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 

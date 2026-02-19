@@ -46,7 +46,7 @@ docker compose exec web python manage.py migrate
 
 ```bash
 # Create virtual environment
-python3.13 -m venv venv
+python3 -m venv venv
 
 # Activate virtual environment
 source venv/bin/activate  # Linux/Mac
